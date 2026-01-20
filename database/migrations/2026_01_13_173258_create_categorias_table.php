@@ -9,17 +9,16 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up()
+   public function up()
 {
-    Schema::create('categorias', function (Blueprint $table) {
-        $table->id();
-        $table->string('nombre');
-    });
-
-    // Agregamos la columna a 'tareas' aquí mismo para no hacer 2 archivos
-    Schema::table('tareas', function (Blueprint $table) {
-        $table->foreignId('categoria_id')->nullable()->constrained('categorias');
-    });
+    // PREGUNTA DE SEGURIDAD: ¿Existe la tabla?
+    if (!Schema::hasTable('categorias')) {
+        Schema::create('categorias', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre');
+            $table->timestamps();
+        });
+    }
 }
     public function down(): void
     {
