@@ -8,14 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class TareaController extends Controller
 {
-    // --- MOSTRAR LISTA (Solo mis tareas) ---
     public function index()
     {
-        // Obtenemos el ID del usuario conectado
         $userId = Auth::id(); 
 
         $tareas = DB::table('tareas')
-            // Unimos con categorías para ver el nombre (ej: "Trabajo")
             ->join('categorias', 'tareas.categoria_id', '=', 'categorias.id')
             ->select('tareas.*', 'categorias.nombre as nombre_categoria')
             // FILTRO DE SEGURIDAD: Solo las tareas de este usuario
@@ -24,18 +21,12 @@ class TareaController extends Controller
         
         return view('tareas.index', compact('tareas'));
     }
-
-    // --- FORMULARIO CREAR ---
     public function create()
     {
-        // ANTES: $categorias = DB::table('categorias')->get();
-        // AHORA: Solo traemos las mías
         $categorias = DB::table('categorias')->where('user_id', Auth::id())->get();
 
         return view('tareas.create', compact('categorias'));
     }
-
-    // --- GUARDAR NUEVA TAREA ---
     public function store(Request $request)
     {
         DB::table('tareas')->insert([

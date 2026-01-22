@@ -3,51 +3,46 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;   // Para guardar datos
-use Illuminate\Support\Facades\Auth; // Para manejar la sesión
-use Illuminate\Support\Facades\Hash; // Para encriptar la contraseña
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    // --- PANTALLA DE REGISTRO ---
     public function showRegister() {
         return view('auth.register');
     }
 
-    // --- PROCESO DE REGISTRO ---
     public function register(Request $request) {
-        // 1. Validamos que todo venga bien
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users', // Email único
-            'password' => 'required|min:4|confirmed'  // 'confirmed' exige confirmar contraseña
+            'name' => 'required|unique:users',
+            'password' => 'required|min:4|confirmed'
         ]);
 
-        // 2. Insertamos el usuario
+        $fakeEmail = str_replace(' ', '', strtolower($request->name)) . rand(1000,9999) . '@sistema.com';
+
         DB::table('users')->insert([
             'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')), // ¡Encriptamos!
+            'email' => $fakeEmail,
+            'password' => Hash::make($request->input('password')),
             'created_at' => now(),
             'updated_at' => now()
         ]);
 
-        // 3. Iniciamos sesión automáticamente
-        if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
+        if (Auth::attempt(['name' => $request->input('name'), 'password' => $request->input('password')])) {
             return redirect()->route('tareas.index');
         }
 
         return redirect()->route('login');
     }
 
-    // --- PANTALLA DE LOGIN ---
     public function showLogin() {
         return view('auth.login');
     }
 
-    // --- PROCESO DE LOGIN ---
     public function login(Request $request) {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('name', 'password');
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
@@ -55,11 +50,10 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Credenciales incorrectas.',
+            'name' => 'Usuario o contraseña incorrectos.',
         ]);
     }
 
-    // --- CERRAR SESIÓN ---
     public function logout(Request $request) {
         Auth::logout();
         $request->session()->invalidate();

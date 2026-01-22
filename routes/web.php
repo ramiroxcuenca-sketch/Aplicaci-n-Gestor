@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TareaController;
 use App\Http\Controllers\CategoriaController;
-use App\Http\Controllers\AuthController; // ¡Importante importar esto!
+use App\Http\Controllers\AuthController;
 
 // --- RUTAS PÚBLICAS (Cualquiera entra) ---
 Route::get('/', function () { return view('welcome'); })->name('inicio');

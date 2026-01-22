@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class CategoriaController extends Controller
 {
-    // Listar (Solo las mías)
     public function index()
     {
         $categorias = DB::table('categorias')
@@ -18,7 +17,6 @@ class CategoriaController extends Controller
         return view('categorias.index', compact('categorias'));
     }
 
-    // Guardar nueva (Con mi firma)
     public function store(Request $request)
     {
         DB::table('categorias')->insert([
@@ -28,8 +26,6 @@ class CategoriaController extends Controller
 
         return redirect()->route('categorias.index')->with('mensaje', 'Categoría creada.');
     }
-
-    // Editar (Solo si es mía)
     public function edit($id)
     {
         $categoria = DB::table('categorias')
@@ -44,7 +40,6 @@ class CategoriaController extends Controller
         return view('categorias.edit', compact('categoria'));
     }
 
-    // Actualizar (Solo si es mía)
     public function update(Request $request, $id)
     {
         DB::table('categorias')
@@ -57,7 +52,6 @@ class CategoriaController extends Controller
         return redirect()->route('categorias.index')->with('mensaje', 'Categoría actualizada.');
     }
 
-    // Eliminar (Solo si es mía)
     public function destroy($id)
     {
         DB::table('categorias')

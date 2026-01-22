@@ -5,14 +5,14 @@
     <div class="col-md-5">
         <div class="card shadow">
             <div class="card-header bg-primary text-white text-center">
-                <h4>🔐 Iniciar Sesión</h4>
+                <h4>Iniciar Sesión</h4>
             </div>
             <div class="card-body">
                 <form action="{{ route('login.post') }}" method="POST">
                     @csrf
                     <div class="mb-3">
-                        <label>Correo Electrónico</label>
-                        <input type="email" name="email" class="form-control" required>
+                        <label>Nombre de Usuario</label>
+                        <input type="text" name="name" class="form-control" required>
                     </div>
                     <div class="mb-3">
                         <label>Contraseña</label>
