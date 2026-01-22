@@ -14,7 +14,7 @@ return new class extends Migration
             $table->text('descripcion')->nullable();
             
             // ----------------------------------------------------
-            // PASO 1: DEFINIR LA COLUMNA DE LA CLAVE FORÁNEA
+            //  DEFINIR LA COLUMNA DE LA CLAVE FORÁNEA
             // ----------------------------------------------------
             $table->bigInteger('categoria_id')->unsigned(); 
             
@@ -30,7 +30,7 @@ return new class extends Migration
             $table->timestamps();
             
             // ----------------------------------------------------
-            // PASO 2: DEFINIR LA RESTRICCIÓN DE LA CLAVE FORÁNEA AL FINAL
+            // EFINIR LA RESTRICCIÓN DE LA CLAVE FORÁNEA AL FINAL
             // ----------------------------------------------------
             $table->foreign('categoria_id')
                   ->references('id')

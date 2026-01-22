@@ -11,7 +11,6 @@ return new class extends Migration
      */
    public function up()
 {
-    // PREGUNTA DE SEGURIDAD: ¿Existe la tabla?
     if (!Schema::hasTable('categorias')) {
         Schema::create('categorias', function (Blueprint $table) {
             $table->id();

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth; // ✅ Importamos Auth
+use Illuminate\Support\Facades\Auth; 
 
 class CategoriaController extends Controller
 {
@@ -12,7 +12,7 @@ class CategoriaController extends Controller
     public function index()
     {
         $categorias = DB::table('categorias')
-            ->where('user_id', Auth::id()) // 🔒 SOLO MIS CATEGORÍAS
+            ->where('user_id', Auth::id()) //  SOLO MIS CATEGORÍAS
             ->get();
             
         return view('categorias.index', compact('categorias'));
@@ -23,7 +23,7 @@ class CategoriaController extends Controller
     {
         DB::table('categorias')->insert([
             'nombre' => $request->input('nombre'),
-            'user_id' => Auth::id() // 🔒 GUARDAMOS MI ID
+            'user_id' => Auth::id() //  GUARDAMOS MI ID
         ]);
 
         return redirect()->route('categorias.index')->with('mensaje', 'Categoría creada.');
@@ -34,7 +34,7 @@ class CategoriaController extends Controller
     {
         $categoria = DB::table('categorias')
             ->where('id', $id)
-            ->where('user_id', Auth::id()) // 🔒 SEGURIDAD
+            ->where('user_id', Auth::id()) //  SEGURIDAD
             ->first();
 
         if (!$categoria) {
@@ -49,7 +49,7 @@ class CategoriaController extends Controller
     {
         DB::table('categorias')
             ->where('id', $id)
-            ->where('user_id', Auth::id()) // 🔒 SEGURIDAD
+            ->where('user_id', Auth::id()) //  SEGURIDAD
             ->update([
                 'nombre' => $request->input('nombre')
             ]);
@@ -62,7 +62,7 @@ class CategoriaController extends Controller
     {
         DB::table('categorias')
             ->where('id', $id)
-            ->where('user_id', Auth::id()) // 🔒 SEGURIDAD
+            ->where('user_id', Auth::id()) //  SEGURIDAD
             ->delete();
 
         return redirect()->route('categorias.index')->with('mensaje', 'Categoría eliminada.');

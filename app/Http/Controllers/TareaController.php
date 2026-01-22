@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;   // Para usar la base de datos
-use Illuminate\Support\Facades\Auth; // ✅ IMPORTANTE: Para saber quién es el usuario
+use Illuminate\Support\Facades\DB;   
+use Illuminate\Support\Facades\Auth; 
 
 class TareaController extends Controller
 {
@@ -18,7 +18,7 @@ class TareaController extends Controller
             // Unimos con categorías para ver el nombre (ej: "Trabajo")
             ->join('categorias', 'tareas.categoria_id', '=', 'categorias.id')
             ->select('tareas.*', 'categorias.nombre as nombre_categoria')
-            // 🔒 FILTRO DE SEGURIDAD: Solo las tareas de este usuario
+            // FILTRO DE SEGURIDAD: Solo las tareas de este usuario
             ->where('tareas.user_id', $userId) 
             ->get();
         
@@ -43,7 +43,7 @@ class TareaController extends Controller
             'descripcion'  => $request->input('descripcion'),
             'fecha'        => $request->input('fecha'),
             'categoria_id' => $request->input('categoria_id'),
-            // 🔒 FIRMA: Guardamos que esta tarea la creó el usuario actual
+            //  FIRMA: Guardamos que esta tarea la creó el usuario actual
             'user_id'      => Auth::id() 
         ]);
 
@@ -58,7 +58,7 @@ class TareaController extends Controller
             ->leftJoin('categorias', 'tareas.categoria_id', '=', 'categorias.id')
             ->select('tareas.*', 'categorias.nombre as nombre_categoria')
             ->where('tareas.id', $id)
-            ->where('tareas.user_id', Auth::id()) // 🔒 SOLO SI ES MÍA
+            ->where('tareas.user_id', Auth::id()) // SOLO SI ES MÍA
             ->first();
 
         // Si la tarea no existe o es de otro usuario, lo sacamos
@@ -91,7 +91,7 @@ class TareaController extends Controller
         // Solo actualizamos si el ID coincide Y el usuario es el dueño
         DB::table('tareas')
             ->where('id', $id)
-            ->where('user_id', Auth::id()) // 🔒 SEGURIDAD
+            ->where('user_id', Auth::id()) //  SEGURIDAD
             ->update([
                 'titulo'       => $request->input('titulo'),
                 'descripcion'  => $request->input('descripcion'),
@@ -108,7 +108,7 @@ class TareaController extends Controller
         // Solo borramos si el usuario es el dueño
         DB::table('tareas')
             ->where('id', $id)
-            ->where('user_id', Auth::id()) // 🔒 SEGURIDAD
+            ->where('user_id', Auth::id()) //  SEGURIDAD
             ->delete();
 
         return redirect()->route('tareas.index')->with('mensaje', 'Tarea eliminada.');
